@@ -1,6 +1,19 @@
 #root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
+  width: 100%;
+  height: 100vh;
   text-align: center;
+  font-family: 'Nunito', sans-serif;
+  color: #18D09A;
+}
+
+body{
+  background-color: #E8EDEF;
+  background-image: url(../images/background.png);
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: 100%;
+}
+
+::-webkit-scrollbar {
+  display: none; /* For Chrome, Safari, and Edge */
 }
