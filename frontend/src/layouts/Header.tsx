@@ -1,6 +1,11 @@
 import { Link } from "react-router-dom"
+import WalletConnectButton from "../components/ConnectButton"
 
 const Header = () => {
+
+    const handleConnectWallet = async () => {
+    }
+
     return (
         <header>
             <nav className="w-full h-20 max-w-6xl m-auto flex items-center justify-between">
@@ -14,7 +19,7 @@ const Header = () => {
                     <Link to="/" className="text-xl hover:text-white">Home</Link>
                     <Link to="/staking" className="text-xl hover:text-white">Staking</Link>
                 </div>
-                <button className="bg-[#18d09a33] text-[#18D09A] py-3 px-4 font-semibold rounded-xl cursor-pointer">Connect Wallet</button>
+                <WalletConnectButton />
             </nav>
         </header>
     )
