@@ -1,13 +1,15 @@
 import { useEffect } from "react"
 import { useStakingInfo } from "../hooks/useStakingInfo"
 import { localizedNumber } from "../utils/Normal"
+import { useRefreshContext } from "../contexts/RefreshContext"
 
 const Hero = () => {
-    const {totalProject, totalAmount, onStakingInfo} = useStakingInfo()
+    const { slowRefresh } = useRefreshContext()
+    const { totalProject, totalAmount, onStakingInfo } = useStakingInfo()
 
     useEffect(() => {
         onStakingInfo()
-    }, [])
+    }, [slowRefresh])
 
     return (
         <div className='w-full flex flex-col items-center justify-center mt-12'>
@@ -31,7 +33,6 @@ const Hero = () => {
                     </div>
                 </div>
             </div>
-
         </div>
     )
 }

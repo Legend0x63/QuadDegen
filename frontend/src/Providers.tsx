@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { darkTheme, getDefaultConfig, RainbowKitProvider } from '@rainbow-me/rainbowkit';
 
 import '@rainbow-me/rainbowkit/styles.css';
+import RefreshProvider from './contexts/RefreshContext';
 
 // 0. Setup queryClient
 const queryClient = new QueryClient()
@@ -20,12 +21,13 @@ export const config = getDefaultConfig({
 });
 
 const Providers = ({ children }: { children: ReactNode }) => {
-
     return (
         <WagmiProvider config={config}>
             <QueryClientProvider client={queryClient}>
                 <RainbowKitProvider theme={darkTheme()} modalSize='compact' >
-                    {children}
+                    <RefreshProvider>
+                        {children}
+                    </RefreshProvider>
                 </RainbowKitProvider>
             </QueryClientProvider>
         </WagmiProvider>
