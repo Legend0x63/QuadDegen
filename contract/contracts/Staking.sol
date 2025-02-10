@@ -8,6 +8,7 @@ contract Staking is Ownable {
     IERC20 public stakingToken;
     
     struct Stake {
+        address owner;
         uint256 amount;
         uint256 startTime;
         uint256 lockPeriod;
@@ -44,6 +45,7 @@ contract Staking is Ownable {
         stakingToken.transferFrom(msg.sender, address(this), amount);
 
         Stake memory _newStake = Stake({
+            owner: msg.sender,
             amount: amount,
             startTime: block.timestamp,
             lockPeriod: lockPeriod * SECONDS_IN_MONTH,
@@ -87,5 +89,16 @@ contract Staking is Ownable {
         if (lockPeriod == 6) return APY_6_MONTHS;
         if (lockPeriod == 12) return APY_12_MONTHS;
         return 0;
+    }
+
+    function getStake(uint256 stakeId) external view returns (uint256 id, address owner, uint256 startTime, uint256 lockPeriod, uint256 rewardRate, bool withdrawn) {
+        return (
+            stakeId,
+            totalStakes[stakeId].owner,
+            totalStakes[stakeId].startTime,
+            totalStakes[stakeId].lockPeriod,
+            totalStakes[stakeId].rewardRate,
+            totalStakes[stakeId].withdrawn
+        );
     }
 }
