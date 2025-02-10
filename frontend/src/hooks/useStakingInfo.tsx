@@ -4,7 +4,6 @@ import { config } from "../Providers";
 import { STAKING_ADDRESS } from "../configs/Constants";
 import { StakingABI } from "../configs/abi/StakingABI";
 
-
 export const useStakingInfo = () => {
     const [totalProject, setTotalProject] = useState(0);
     const [totalAmount, setTotalAmount] = useState(0);

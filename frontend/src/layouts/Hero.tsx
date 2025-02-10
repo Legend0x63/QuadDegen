@@ -1,7 +1,9 @@
 import { useEffect } from "react"
+import { formatUnits } from "viem"
 import { useStakingInfo } from "../hooks/useStakingInfo"
 import { localizedNumber } from "../utils/Normal"
 import { useRefreshContext } from "../contexts/RefreshContext"
+import { TOKEN_DECIMALS } from "../configs/Constants"
 
 const Hero = () => {
     const { slowRefresh } = useRefreshContext()
@@ -19,7 +21,7 @@ const Hero = () => {
                         <img src="/images/lock.png" alt="lock" />
                     </div>
                     <div className="flex flex-col items-start bg-[#1c1c1c] p-2 px-6 -ml-3 rounded-r-3xl">
-                        <div>{localizedNumber(totalAmount)}</div>
+                        <div>{localizedNumber(formatUnits(BigInt(totalAmount), TOKEN_DECIMALS))}</div>
                         <div>Total Locked</div>
                     </div>
                 </div>

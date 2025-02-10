@@ -1,8 +1,15 @@
 import { useEffect, useState } from "react"
-import { useAccount } from "wagmi"
 import dayjs from 'dayjs';
+import { useAccount } from "wagmi"
+import { formatUnits } from "viem";
+
 import { useTokenBalance } from "../../hooks/useTokenBalance"
 import { localizedNumber } from "../../utils/Normal"
+import { useStake } from "../../hooks/useStake";
+import { useAllowance } from "../../hooks/useAllowance";
+import { useApprove } from "../../hooks/useApprove";
+import { TOKEN_DECIMALS } from "../../configs/Constants";
+import { useRefreshContext } from "../../contexts/RefreshContext";
 
 const Percents = [10, 25, 50, 75, 100]
 const Durations = [1, 3, 6, 12]
@@ -10,17 +17,24 @@ const Durations = [1, 3, 6, 12]
 const StakingBox = () => {
     const { address } = useAccount()
     const { balance, getBalance } = useTokenBalance()
+    const { isStakePending, onStake } = useStake()
+    const { fastRefresh } = useRefreshContext()
+
+    const { allowance, getAllowance } = useAllowance()
+    const { isApprovePending, onApprove } = useApprove()
 
     const [percent, setPercent] = useState(0)
     const [amount, setAmount] = useState(0)
     const [duration, setDuration] = useState(1)
     const [apr, setApr] = useState(12)
+    const [isNeedApprove, setIsNeedApprove] = useState(false)
 
     useEffect(() => {
         if (address) {
             getBalance(address)
+            getAllowance(address)
         }
-    }, [address])
+    }, [address, fastRefresh])
 
     useEffect(() => {
         setAmount(Number(balance) * percent / 100)
@@ -38,12 +52,31 @@ const StakingBox = () => {
         }
     }, [duration])
 
+    useEffect(() => {
+        console.log("legend, allowance = ", allowance)
+        if (amount > Number(formatUnits(BigInt(allowance), TOKEN_DECIMALS))) {
+            setIsNeedApprove(true)
+        } else {
+            setIsNeedApprove(false)
+        }
+    }, [amount, allowance])
+
     const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value
         if (value) {
             setAmount(parseFloat(e.target.value))
         } else {
             setAmount(0)
+        }
+    }
+
+    const handleAction = () => {
+        if (address) {
+            if (amount > allowance) {
+                onApprove(amount)
+            } else {
+                onStake(amount, duration)
+            }
         }
     }
 
@@ -108,7 +141,7 @@ const StakingBox = () => {
             </div>
 
             <div className="flex items-center justify-center mt-4">
-                <button className="bg-[#18D09A] text-white text-lg rounded p-0.5 px-8 cursor-pointer">Stake</button>
+                <button className="border border-[#18D09A] text-lg rounded-lg p-0.5 px-8 cursor-pointer hover:bg-[#18D09A40] hover:text-white" onClick={handleAction}>{isNeedApprove ? 'Approve' : isApprovePending ? 'Approving...' : isStakePending ? 'Staking...' : 'Stake'}</button>
             </div>
         </div>
     )
