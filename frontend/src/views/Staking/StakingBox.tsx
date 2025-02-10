@@ -53,7 +53,6 @@ const StakingBox = () => {
     }, [duration])
 
     useEffect(() => {
-        console.log("legend, allowance = ", allowance)
         if (amount > Number(formatUnits(BigInt(allowance), TOKEN_DECIMALS))) {
             setIsNeedApprove(true)
         } else {
@@ -134,14 +133,13 @@ const StakingBox = () => {
                         </div>
                         <div className="w-1/2">
                             <div>End Date</div>
-                            <div className="text-xl font-bold">{futureDate.format('MM-DD-YYYY')}</div>
+                            <div className="text-xl font-bold">{futureDate.format('DD.MM.YYYY')}</div>
                         </div>
                     </div>
                 </div>
             </div>
-
             <div className="flex items-center justify-center mt-4">
-                <button className="border border-[#18D09A] text-lg rounded-lg p-0.5 px-8 cursor-pointer hover:bg-[#18D09A40] hover:text-white" onClick={handleAction}>{isNeedApprove ? 'Approve' : isApprovePending ? 'Approving...' : isStakePending ? 'Staking...' : 'Stake'}</button>
+                <button disabled={isApprovePending || isStakePending} className="border border-[#18D09A] text-lg rounded-lg p-0.5 px-8 cursor-pointer hover:bg-[#18D09A40] hover:text-white disabled:opacity-30" onClick={handleAction}>{isNeedApprove ? isApprovePending ? 'Approving...' : 'Approve' : isStakePending ? 'Staking...' : 'Stake'}</button>
             </div>
         </div>
     )

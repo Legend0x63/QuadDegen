@@ -6,6 +6,7 @@ import { darkTheme, getDefaultConfig, RainbowKitProvider } from '@rainbow-me/rai
 
 import '@rainbow-me/rainbowkit/styles.css';
 import RefreshProvider from './contexts/RefreshContext';
+import AppProvider from './contexts/AppContext';
 
 // 0. Setup queryClient
 const queryClient = new QueryClient()
@@ -25,9 +26,11 @@ const Providers = ({ children }: { children: ReactNode }) => {
         <WagmiProvider config={config}>
             <QueryClientProvider client={queryClient}>
                 <RainbowKitProvider theme={darkTheme()} modalSize='compact' >
-                    <RefreshProvider>
-                        {children}
-                    </RefreshProvider>
+                    <AppProvider>
+                        <RefreshProvider>
+                            {children}
+                        </RefreshProvider>
+                    </AppProvider>
                 </RainbowKitProvider>
             </QueryClientProvider>
         </WagmiProvider>

@@ -20,3 +20,15 @@ export const localizedNumber = (value: string | number, decimals = 2, locale = '
 
     return formattedNumber
 }
+
+export const shortenAddress = (address: string | undefined, length = 6) => {
+    if (address) {
+        if (address.length > 15) {
+            return `${address.slice(0, length)}...${address.slice(-length)}`;
+        } else {
+            return address
+        }
+    } else {
+        return ''
+    }
+};

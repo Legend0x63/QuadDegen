@@ -4,14 +4,22 @@ import { useStakingInfo } from "../hooks/useStakingInfo"
 import { localizedNumber } from "../utils/Normal"
 import { useRefreshContext } from "../contexts/RefreshContext"
 import { TOKEN_DECIMALS } from "../configs/Constants"
+import { useAppContext } from "../contexts/AppContext"
 
 const Hero = () => {
+    const {setProjectCount} = useAppContext()
     const { slowRefresh } = useRefreshContext()
     const { totalProject, totalAmount, onStakingInfo } = useStakingInfo()
 
     useEffect(() => {
         onStakingInfo()
     }, [slowRefresh])
+
+    useEffect(() => {
+        if (totalProject) {
+            setProjectCount(totalProject)
+        }
+    }, [totalProject])
 
     return (
         <div className='w-full flex flex-col items-center justify-center mt-12'>
