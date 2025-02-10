@@ -16,13 +16,16 @@ contract Staking is Ownable {
     }
     
     mapping(address => Stake[]) public stakes;
-    
-    uint256 public constant APY_1_MONTH = 5; // 5% APY
-    uint256 public constant APY_3_MONTHS = 10; // 10% APY
-    uint256 public constant APY_6_MONTHS = 15; // 15% APY
-    uint256 public constant APY_12_MONTHS = 25; // 25% APY
+    mapping(uint256 => Stake) public totalStakes;
 
-    uint256 public constant SECONDS_IN_YEAR = 365 days;
+    uint256 public totalStakeItems = 0;
+    uint256 public totalStakedAmount = 0;
+    
+    uint256 public constant APY_1_MONTH = 12; // 5% APY
+    uint256 public constant APY_3_MONTHS = 24; // 10% APY
+    uint256 public constant APY_6_MONTHS = 36; // 15% APY
+    uint256 public constant APY_12_MONTHS = 48; // 25% APY
+
     uint256 public constant SECONDS_IN_MONTH = 30 days;
 
     constructor(address _stakingToken) Ownable(msg.sender) {
@@ -39,14 +42,21 @@ contract Staking is Ownable {
         uint256 rewardRate = getAPY(lockPeriod);
         
         stakingToken.transferFrom(msg.sender, address(this), amount);
-        
-        stakes[msg.sender].push(Stake({
+
+        Stake memory _newStake = Stake({
             amount: amount,
             startTime: block.timestamp,
             lockPeriod: lockPeriod * SECONDS_IN_MONTH,
             rewardRate: rewardRate,
             withdrawn: false
-        }));
+        });
+
+        stakes[msg.sender].push(_newStake);
+
+        totalStakeItems ++;
+        totalStakes[totalStakeItems] = _newStake;
+
+        totalStakedAmount += amount;
     }
 
     function withdraw(uint256 index) external {
@@ -56,15 +66,19 @@ contract Staking is Ownable {
         require(!stakeData.withdrawn, "Already withdrawn");
         require(block.timestamp >= stakeData.startTime + stakeData.lockPeriod, "Lock period not over");
         
-        uint256 reward = calculateReward(stakeData.amount, stakeData.rewardRate, stakeData.lockPeriod);
+        uint256 reward = calculateReward(stakeData.amount, stakeData.rewardRate);
         uint256 totalAmount = stakeData.amount + reward;
         stakeData.withdrawn = true;
         
         stakingToken.transfer(msg.sender, totalAmount);
     }
 
-    function calculateReward(uint256 amount, uint256 apy, uint256 lockTime) internal pure returns (uint256) {
-        return (amount * apy * lockTime) / (100 * SECONDS_IN_YEAR);
+    function calculateReward(uint256 amount, uint256 apy) internal pure returns (uint256) {
+        return (amount * apy) / 100;
+    }
+
+    function updateStakingtoken(address _newStakingToken) external onlyOwner {
+        stakingToken = IERC20(_newStakingToken);
     }
 
     function getAPY(uint256 lockPeriod) internal pure returns (uint256) {
