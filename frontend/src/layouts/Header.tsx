@@ -3,9 +3,6 @@ import WalletConnectButton from "../components/ConnectButton"
 
 const Header = () => {
 
-    const handleConnectWallet = async () => {
-    }
-
     return (
         <header>
             <nav className="w-full h-20 max-w-6xl m-auto flex items-center justify-between">

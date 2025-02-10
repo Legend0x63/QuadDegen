@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 import { WagmiProvider } from 'wagmi'
-import { base, baseSepolia } from "wagmi/chains";
+import { base, baseSepolia, sepolia } from "wagmi/chains";
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { darkTheme, getDefaultConfig, RainbowKitProvider } from '@rainbow-me/rainbowkit';
 
@@ -12,10 +12,10 @@ const queryClient = new QueryClient()
 // 1. Get projectId from https://cloud.reown.com
 const projectId = 'd435f16be793d3db0463773854f4ddf3'
 
-const config = getDefaultConfig({
+export const config = getDefaultConfig({
     appName: 'Quad Degen',
     projectId: projectId,
-    chains: [base, baseSepolia],
+    chains: [base, baseSepolia, sepolia],
     ssr: true, // If your dApp uses server side rendering (SSR)
 });
 
