@@ -24,8 +24,12 @@ export const useStakingInfo = () => {
                     },
                 ],
             });
-            setTotalProject(Number(data[0].result));
-            setTotalAmount(Number(data[1].result));
+            if (data[0].result) {
+                setTotalProject(Number(data[0].result));
+            }
+            if (data[1].result) {
+                setTotalAmount(Number(data[1].result));
+            }
         } catch (error) {
             console.error("Error fetching contract data:", error);
         }
