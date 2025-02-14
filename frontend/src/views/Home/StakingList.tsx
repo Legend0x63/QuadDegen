@@ -1,20 +1,27 @@
 import { useEffect } from "react"
+import { formatUnits } from "viem"
+import dayjs from "dayjs"
+
 import { useStakeList } from "../../hooks/useStakeList"
 import { useAppContext } from "../../contexts/AppContext"
 import { localizedNumber, shortenAddress } from "../../utils/Normal"
-import { formatUnits } from "viem"
 import { TOKEN_DECIMALS } from "../../configs/Constants"
-import dayjs from "dayjs"
+import { useWithdraw } from "../../hooks/useWithdraw"
 
 const StakingList = () => {
     const { projectCount } = useAppContext()
     const { stakeList, onStakeList } = useStakeList()
+    const { isWithdrawPending, onWithdraw } = useWithdraw()
 
     useEffect(() => {
         if (projectCount) {
             onStakeList(projectCount)
         }
     }, [projectCount])
+
+    const handleWithdraw = (id: number) => {
+        onWithdraw(id)
+    }
 
     return (
         <div className="w-full max-w-4xl bg-[#1c1c1cc0] rounded-2xl p-8 mt-12 max-h-[600px] overflow-y-auto">
@@ -47,7 +54,7 @@ const StakingList = () => {
                                         (stake.withdrawn ?
                                             'Closed'
                                             :
-                                            <button>Withdraw</button>
+                                            <button disabled={isWithdrawPending} className="border border-[#18D09A] text-lg rounded-lg p-0.5 px-8 cursor-pointer hover:bg-[#18D09A40] hover:text-white disabled:opacity-30" onClick={() => handleWithdraw(Number(stake.stakeId))}>{isWithdrawPending ? 'Unstaking...' : 'Unstake'}</button>
                                         )
                                         :
                                         'Locked'}

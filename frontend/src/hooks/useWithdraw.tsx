@@ -21,5 +21,5 @@ export const useWithdraw = () => {
             return false
         }
     }, [])
-    return { withdrawData: data, isWithdrawError: isError, isWithdrawPending: isPending, onwithdraw: handleWithdraw }
+    return { withdrawData: data, isWithdrawError: isError, isWithdrawPending: isPending, onWithdraw: handleWithdraw }
 }
