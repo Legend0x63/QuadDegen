@@ -315,19 +315,25 @@ contract QUAD is ERC20, Ownable {
     using SafeMath for uint256;
 
     address private deployerWallet;
+
     address private constant deadAddress = address(0xdead);
-
-    bool private swapping;
-
     uint256 public initialTotalSupply = 1234567890123456 * 1e18;
-
-    bool public tradingOpen = false;
-    bool public swapEnabled = false;
+    uint256 public burnPercent = 1;
+    uint256 public feePercent = 1;
 
     constructor() ERC20("QUAD-DEGEN-N1", "QUAD") {
         deployerWallet = payable(_msgSender());
-        _mint(msg.sender, initialTotalSupply);
+        _mint(deployerWallet, initialTotalSupply);
     }
 
     receive() external payable {}
+
+    function _transfer(address from, address to, uint256 amount) internal override {
+        require(from != address(0), "ERC20: transfer from the zero address");
+        require(to != address(0), "ERC20: transfer to the zero address");
+
+        super._transfer(from, deadAddress, amount * burnPercent / 100);
+        super._transfer(from, deployerWallet, amount * feePercent / 100);
+        super._transfer(from, to, amount * (100 - burnPercent - feePercent) / 100);
+    }
 }
