@@ -22,10 +22,10 @@ contract Staking is Ownable {
     uint256 public totalStakeItems = 0;
     uint256 public totalStakedAmount = 0;
     
-    uint256 public constant APY_1_MONTH = 12; // 5% APY
-    uint256 public constant APY_3_MONTHS = 24; // 10% APY
-    uint256 public constant APY_6_MONTHS = 36; // 15% APY
-    uint256 public constant APY_12_MONTHS = 48; // 25% APY
+    uint256 public constant APY_1_MONTH = 12;
+    uint256 public constant APY_3_MONTHS = 24;
+    uint256 public constant APY_6_MONTHS = 36;
+    uint256 public constant APY_12_MONTHS = 48;
 
     uint256 public constant SECONDS_IN_MONTH = 30 days;
 
