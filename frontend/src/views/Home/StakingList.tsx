@@ -47,7 +47,8 @@ const StakingList = () => {
                                 <th scope="row" className="p-4 font-semibold">{shortenAddress(stake.owner)}</th>
                                 <td>{localizedNumber(formatUnits(BigInt(stake.amount), TOKEN_DECIMALS))}</td>
                                 <td>{localizedNumber(Number(formatUnits(BigInt(stake.amount), TOKEN_DECIMALS)) * Number(stake.rewardRate) / 100)}</td>
-                                <td>{Number(stake.lockPeriod) / 3600 / 24} Days</td>
+                                {/* <td>{Number(stake.lockPeriod) / 3600 / 24} Days</td> */}
+                                <td>{Number(stake.lockPeriod) / 60} Days</td>
                                 <td>{dayjs.unix(unlockTime).format('DD.MM.YYYY')}</td>
                                 <td>
                                     {nowTime > unlockTime ?
