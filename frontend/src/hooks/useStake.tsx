@@ -4,7 +4,7 @@ import { parseUnits } from "viem";
 import { STAKING_ADDRESS, TOKEN_DECIMALS } from "../configs/Constants";
 import { AddressString } from "../configs/Types";
 import { StakingABI } from "../configs/abi/StakingABI";
-import { sepolia } from "viem/chains";
+import { baseSepolia } from "viem/chains";
 
 export const useStake = () => {
     const { data, isError, isPending, writeContract } = useWriteContract();
@@ -14,7 +14,7 @@ export const useStake = () => {
             writeContract({
                 address: STAKING_ADDRESS as AddressString,
                 abi: StakingABI,
-                chainId: sepolia.id,
+                chainId: baseSepolia.id,
                 functionName: "stake",
                 args: [parseUnits(stakeAmount.toString(), TOKEN_DECIMALS), BigInt(period)]
             })

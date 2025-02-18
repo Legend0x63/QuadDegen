@@ -27,10 +27,11 @@ contract Staking is Ownable {
     uint256 public constant APY_6_MONTHS = 36;
     uint256 public constant APY_12_MONTHS = 48;
 
-    uint256 public constant SECONDS_IN_MONTH = 30 days;
+    uint256 public SECONDS_IN_MONTH;
 
     constructor(address _stakingToken) Ownable(msg.sender) {
         stakingToken = IERC20(_stakingToken);
+        SECONDS_IN_MONTH = 30 days;
     }
 
     function stake(uint256 amount, uint256 lockPeriod) external {
@@ -81,6 +82,10 @@ contract Staking is Ownable {
 
     function updateStakingtoken(address _newStakingToken) external onlyOwner {
         stakingToken = IERC20(_newStakingToken);
+    }
+
+    function updateDurationUnit(uint256 _newDurationUnit) external onlyOwner {
+        SECONDS_IN_MONTH = _newDurationUnit;
     }
 
     function getAPY(uint256 lockPeriod) internal pure returns (uint256) {

@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 import { useWriteContract } from "wagmi";
 import { erc20Abi, parseUnits } from "viem";
-import { sepolia } from "viem/chains";
+import { baseSepolia } from "viem/chains";
 import { STAKING_ADDRESS, TOKEN_ADDRESS, TOKEN_DECIMALS } from "../configs/Constants";
 
 export const useApprove = () => {
@@ -12,7 +12,7 @@ export const useApprove = () => {
             await writeContractAsync({
                 address: TOKEN_ADDRESS,
                 abi: erc20Abi,
-                chainId: sepolia.id,
+                chainId: baseSepolia.id,
                 functionName: "approve",
                 args: [STAKING_ADDRESS, parseUnits(amount.toString(), TOKEN_DECIMALS)],
             })

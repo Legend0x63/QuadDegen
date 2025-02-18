@@ -1,6 +1,6 @@
 import { useCallback, useState } from "react";
 import { erc20Abi, formatUnits } from "viem";
-import { sepolia } from "viem/chains";
+import { baseSepolia } from "viem/chains";
 import { readContract } from "@wagmi/core";
 
 import { config } from "../Providers";
@@ -16,7 +16,7 @@ export const useTokenBalance = () => {
                 const data = await readContract(config,
                     {
                     address: TOKEN_ADDRESS as AddressString,
-                    chainId: sepolia.id,
+                    chainId: baseSepolia.id,
                     abi: erc20Abi,
                     functionName: 'balanceOf',
                     args: [walletAddress as AddressString],

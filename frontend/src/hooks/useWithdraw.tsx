@@ -1,6 +1,6 @@
 import { useCallback } from "react";
 import { useWriteContract } from "wagmi";
-import { sepolia } from "viem/chains";
+import { baseSepolia } from "viem/chains";
 import { STAKING_ADDRESS } from "../configs/Constants";
 import { AddressString } from "../configs/Types";
 import { StakingABI } from "../configs/abi/StakingABI";
@@ -13,7 +13,7 @@ export const useWithdraw = () => {
             writeContract({
                 address: STAKING_ADDRESS as AddressString,
                 abi: StakingABI,
-                chainId: sepolia.id,
+                chainId: baseSepolia.id,
                 functionName: "withdraw",
                 args: [BigInt(index)]
             })

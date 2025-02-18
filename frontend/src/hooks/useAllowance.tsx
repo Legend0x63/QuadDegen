@@ -1,6 +1,6 @@
 import { useCallback, useState } from "react";
 import { erc20Abi } from "viem";
-import { sepolia } from "viem/chains";
+import { baseSepolia } from "viem/chains";
 import { readContract } from "@wagmi/core";
 
 import { config } from "../Providers";
@@ -16,7 +16,7 @@ export const useAllowance = () => {
                 {
                     address: TOKEN_ADDRESS as AddressString,
                     abi: erc20Abi,
-                    chainId: sepolia.id,
+                    chainId: baseSepolia.id,
                     functionName: "allowance",
                     args: [walletAddress as AddressString, STAKING_ADDRESS],
                 });
